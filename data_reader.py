@@ -11,6 +11,7 @@ class DataReader():
 
     def read_data(self):
         filename = os.listdir("datasets")[0]
+        print(filename)
         file = open("datasets/" + filename)
 
         file.readline()
@@ -25,7 +26,7 @@ class DataReader():
             data.append((x, label))
 
         random.shuffle(data)
-
+        
         X = []
         Y = []
 
@@ -45,8 +46,9 @@ class DataReader():
 
     def process_data(self, splt):
         data = []
-
-        data = list(map(int, splt[1:-1]))
+        for i in range(1, len(splt)):
+            if splt[i] == "": splt[i] = 0
+        data = list(map(float, splt[1:-1]))
 
         label = list(map(int, splt[-1:]))
 

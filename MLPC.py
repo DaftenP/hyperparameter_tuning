@@ -9,10 +9,10 @@ class MLPC():
 
     def new_model(self):
         model = keras.Sequential([
-            keras.layers.Dense(3000),
+            keras.layers.Dense(11),
             keras.layers.Dense(1024, activation="relu"),
             keras.layers.Dropout(rate=0.5),
-            keras.layers.Dense(2, activation='softmax')
+            keras.layers.Dense(11, activation='softmax')
         ])
 
         model.compile(optimizer="adam", metrics=["accuracy"],
