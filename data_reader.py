@@ -10,7 +10,7 @@ class DataReader():
         self.train_X, self.train_Y, self.test_X, self.test_Y = self.read_data()
 
     def read_data(self):
-        filename = os.listdir("datasets")[0]
+        filename = os.listdir("datasets")[1]
         print(filename)
         file = open("datasets/" + filename)
 
