@@ -1,8 +1,6 @@
 import numpy as np
 import os
 import random
-from tensorflow.keras.utils import to_categorical
-from matplotlib import pyplot as plt
 
 
 class DataReader():
@@ -26,7 +24,7 @@ class DataReader():
             data.append((x, label))
 
         random.shuffle(data)
-        
+
         X = []
         Y = []
 

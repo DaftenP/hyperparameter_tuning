@@ -1,11 +1,10 @@
-from tensorflow import keras
 import data_reader
 import MLPC
-import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import kerastuner as kt
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, classification_report
+
 
 EPOCHS = 200
 
@@ -22,7 +21,7 @@ tuner.search(dr.train_X, dr.train_Y, epochs=100, validation_split=0.1)
 best_hps = tuner.get_best_hyperparameters()[0]
 
 
-# 최적 하이퍼파라미터를 출력합니다.
+# 최적 하이퍼파라미터 출력
 
 print(f"""
 units_0 : {best_hps.get('units_0')}
@@ -40,21 +39,18 @@ batch_size : {best_hps.get('batch_size')}
 """)
 
 
-# 배치 크기는 따로 저장했다가 fit 메소드에서 적용합니다.
+# 배치 크기는 따로 저장했다가 fit 메소드에서 적용
 batch_size = best_hps.get('batch_size')
 
 
-# 최적값으로 모델을 생성합니다.
+# 최적값으로 모델 생성
 model = tuner.hypermodel.build(best_hps)
 
 
-# 학습을 진행합니다.
-# validation_split 아규먼트로 Training 데이터셋의 10%를 Validation 데이터셋으로 사용하도록합니다.
-# 예를 들어 배치 크기가 256이라는 것은 전체 데이터셋을 샘플 256개씩으로 나누어서 학습에 사용한다는 의미입니다.
-# 예를 들어 에포크(epochs)가 10이라는 것은 전체 train 데이터셋을 10번 본다는 의미입니다.
+# 학습 진행
 history = model.fit(
   dr.train_X, dr.train_Y,
-  validation_split = 0.1,
+  validation_split=0.1,
   batch_size=batch_size,
   epochs=100,
 )
@@ -77,7 +73,5 @@ plt.show()
 
 pred_Y = model.predict(dr.test_X)
 
-pred_Y = np.argmax(pred_Y, axis=1)
-dr.test_Y = np.argmax(dr.test_Y, axis=1)
-
-print(accuracy_score(dr.test_Y, pred_Y))
+print(accuracy_score(pred_Y, dr.test_Y))
+print(classification_report(pred_Y, dr.test_Y))
